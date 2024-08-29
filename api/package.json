@@ -11,13 +11,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.16.2",
+    "@prisma/client": "^5.19.0",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.8.0",
-    "prisma": "^5.16.2"
+    "mongodb": "^6.8.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.19.0"
   }
 }
