@@ -31,7 +31,7 @@ function ProfilePage() {
           <div className="info">
             <span>
               Avatar:
-              <img src={currentUser.avatar || "logo.png"} alt="" />
+              <img src={currentUser.avatar || "/avatar.png"} alt="" />
             </span>
             <span>
               Username: <b>{currentUser.username}</b>
