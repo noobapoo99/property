@@ -1,13 +1,17 @@
 import { useState } from "react";
 import "./newPostPage.scss";
 import ReactQuill from "react-quill";
+
 import "react-quill/dist/quill.snow.css";
+import apiRequest from "../../lib/apiRequest";
 import UploadWidget from "../../components/uploadWidget/UploadWidget";
+import { useNavigate } from "react-router-dom";
 
 function NewPostPage() {
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
   const [images, setImages] = useState([]);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +36,7 @@ function NewPostPage() {
           images: images,
         },
         postDetail: {
-          desc: "Desc 1",
+          desc: value,
           utilities: inputs.utilities,
           pet: inputs.pet,
           income: inputs.income,
@@ -43,6 +47,7 @@ function NewPostPage() {
           postId: inputs.postId,
         },
       });
+      navigate("/" + res.data.id);
     } catch (err) {
       console.log(err);
       setError(error);
