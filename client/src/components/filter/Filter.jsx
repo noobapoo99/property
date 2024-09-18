@@ -8,9 +8,9 @@ function Filter() {
     type: searchParams.get("type") || "",
     city: searchParams.get("city") || "",
     property: searchParams.get("property") || "",
-    minPrice: searchParams.get("minPrice") || 0,
-    maxPrice: searchParams.get("maxPrice") || 10000000,
-    bedroom: searchParams.get("bedroom") || 1,
+    minPrice: searchParams.get("minPrice") || "",
+    maxPrice: searchParams.get("maxPrice") || "",
+    bedroom: searchParams.get("bedroom") || "",
   });
 
   const handleChange = (e) => {
@@ -44,14 +44,13 @@ function Filter() {
       </div>
       <div className="bottom">
         <div className="item">
-          <label
-            htmlFor="type"
+          <label htmlFor="type">Type</label>
+          <select
+            name="type"
+            id="type"
             onChange={handleChange}
-            defaultValue={query.city}
+            defaultValue={query.type}
           >
-            Type
-          </label>
-          <select name="type" id="type">
             <option value="">any</option>
             <option value="buy">Buy</option>
             <option value="rent">Rent</option>

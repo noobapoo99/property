@@ -9,7 +9,7 @@ export const getPosts = async (req, res) => {
         city: query.city || undefined,
         type: query.type || undefined,
         property: query.property || undefined,
-        bedrooom: parseInt(query.bedroom) || undefined,
+        bedroom: parseInt(query.bedroom) || undefined,
         price: {
           gte: parseInt(query.minPrice) || 0,
           lte: parseInt(query.maxPrice) || 10000000,
