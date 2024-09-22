@@ -13,17 +13,6 @@ datasource db {
   url      = "mongodb+srv://apoo:test123@cluster0.6zbrk8w.mongodb.net/estate?retryWrites=true&w=majority&appName=Cluster0"
 }
 
-model user {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
-  email     String      @unique
-  username  String      @unique
-  password  String
-  avatar    String?
-  createdAt DateTime    @default(now())
-  posts     Post[]
-  savedPost SavedPost[]
-}
-
 model Post {
   id         String      @id @default(auto()) @map("_id") @db.ObjectId
   title      String
@@ -79,4 +68,36 @@ model SavedPost {
   createdAt DateTime @default(now())
 
   @@unique([userId, postId])
+}
+
+model user {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  email     String      @unique
+  username  String      @unique
+  password  String
+  avatar    String?
+  createdAt DateTime    @default(now())
+  posts     Post[]
+  savedPost SavedPost[]
+  chats     Chat[]      @relation(fields: [chatIDs], references: [id])
+  chatIDs   String[]    @db.ObjectId
+}
+
+model Chat {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  users       user[]    @relation(fields: [userIDs], references: [id])
+  userIDs     String[]  @db.ObjectId
+  createdAt   DateTime  @default(now())
+  SeenBy      String[]  @db.ObjectId
+  messages    Message[]
+  lastMessage String?
+}
+
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  text      String
+  userId    String
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  chatId    String   @db.ObjectId
+  createdAt DateTime @default(now())
 }
