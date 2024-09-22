@@ -4,6 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
 import { format } from "timeago.js";
 import { SocketContext } from "../../context/SocketContext";
+import { useNotificationStore } from "../../lib/notificationStore";
 
 function Chat({ chats }) {
   const [chat, setChat] = useState(null);
@@ -11,6 +12,8 @@ function Chat({ chats }) {
   const { socket } = useContext(SocketContext);
 
   const messageEndRef = useRef();
+
+  const decrease = useNotificationStore((state) => state.decrease);
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
