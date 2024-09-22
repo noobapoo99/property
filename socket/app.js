@@ -6,11 +6,11 @@ const io = new Server({
   },
 });
 
-/* let onlineUser = [];
+let onlineUser = [];
 
 const addUser = (userId, socketId) => {
-  const userExits = onlineUser.find((user) => user.userId === userId);
-  if (!userExits) {
+  const userExists = onlineUser.find((user) => user.userId === userId);
+  if (!userExists) {
     onlineUser.push({ userId, socketId });
   }
 };
@@ -22,9 +22,9 @@ const removeUser = (socketId) => {
 const getUser = (userId) => {
   return onlineUser.find((user) => user.userId === userId);
 };
- */
+
 io.on("connection", (socket) => {
-  /*  socket.on("newUser", (userId) => {
+  socket.on("newUser", (userId) => {
     addUser(userId, socket.id);
   });
 
@@ -35,8 +35,7 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     removeUser(socket.id);
-  }); */
-  console.log(socket.id);
+  });
 });
 
 io.listen("4000");
