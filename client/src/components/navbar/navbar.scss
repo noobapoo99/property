@@ -63,12 +63,12 @@ nav {
       margin: 20px;
     }
 
-    .user{
+    .user {
       display: flex;
       align-items: center;
       font-weight: bold;
 
-      img{
+      img {
         width: 40px;
         height: 40px;
         border-radius: 50%;
@@ -76,20 +76,20 @@ nav {
         margin-right: 20px;
       }
 
-      span{
-        @include sm{
+      span {
+        @include sm {
           display: none;
         }
       }
 
-      .profile{
+      .profile {
         padding: 12px 24px;
         background-color: #fece51;
         cursor: pointer;
         border: none;
         position: relative;
-        
-        .notification{
+
+        .notification {
           position: absolute;
           top: -8px;
           right: -8px;
@@ -102,12 +102,17 @@ nav {
           align-items: center;
           justify-content: center;
         }
-
       }
     }
 
     .register {
       background-color: #fece51;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: auto; /* Adjusts the width, or you can set a specific width */
+      height: auto;
+      // min-height: 100vh;
     }
 
     .menuIcon {
