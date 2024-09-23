@@ -28,7 +28,7 @@ function NewPostPage() {
           address: inputs.address,
           city: inputs.city,
           bedroom: parseInt(inputs.bedroom),
-          bathroom: parseInt(inputs.address),
+          bathroom: parseInt(inputs.bathroom),
           latitude: inputs.latitude,
           longitude: inputs.longitude,
           type: inputs.type,
