@@ -22,6 +22,7 @@ function Register() {
     console.log(username, email, password);
     try {
       const res = await apiRequest.post("/auth/register", {
+        //this sends an api request to the endpoint auth/register which in api/auth/controller checks with backened and creates a db on mongo and returns true
         username,
         email,
         password,

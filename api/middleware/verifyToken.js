@@ -8,6 +8,6 @@ export const verifyToken = (req, res, next) => {
     if (err) return res.status(403).json({ message: "token is not valid!" });
     req.userId = payload.id;
 
-    next(); // gives permission to go the next request if it is correct
+    next(); // gives permission to go the next request if it is correct !
   });
 };
