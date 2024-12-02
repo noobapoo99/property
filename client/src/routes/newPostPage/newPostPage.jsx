@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "./newPostPage.scss";
 import ReactQuill from "react-quill";
-
 import "react-quill/dist/quill.snow.css";
 import apiRequest from "../../lib/apiRequest";
 import UploadWidget from "../../components/uploadWidget/UploadWidget";
@@ -11,26 +10,57 @@ function NewPostPage() {
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
   const [images, setImages] = useState([]);
+  const [city, setCity] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
   const navigate = useNavigate();
+
+  const handleCityChange = async (e) => {
+    const cityName = e.target.value;
+    setCity(cityName);
+
+    if (cityName.trim() === "") {
+      setLatitude("");
+      setLongitude("");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://geocode.search.hereapi.com/v1/geocode?q=${cityName}&apiKey=zdn2NkVG69fWiASo3uUnWZS4s41I3wbCWy8uDnMbXjE`
+      );
+      const data = await response.json();
+
+      if (data.items && data.items.length > 0) {
+        setLatitude(data.items[0].position.lat);
+        setLongitude(data.items[0].position.lng);
+      } else {
+        setLatitude("");
+        setLongitude("");
+      }
+    } catch (err) {
+      console.error("Error fetching geocode data:", err);
+      setLatitude("");
+      setLongitude("");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const inputs = Object.fromEntries(formData);
 
-    //console.log(inputs);
     try {
       const res = await apiRequest.post("/posts", {
         postData: {
           title: inputs.title,
           price: parseInt(inputs.price),
-
           address: inputs.address,
           city: inputs.city,
           bedroom: parseInt(inputs.bedroom),
           bathroom: parseInt(inputs.bathroom),
-          latitude: inputs.latitude,
-          longitude: inputs.longitude,
+          latitude: latitude || inputs.latitude,
+          longitude: longitude || inputs.longitude,
           type: inputs.type,
           property: inputs.property,
           images: images,
@@ -49,8 +79,8 @@ function NewPostPage() {
       });
       navigate("/" + res.data.id);
     } catch (err) {
-      console.log(err);
-      setError(error);
+      console.error(err);
+      setError("An error occurred while creating the post.");
     }
   };
 
@@ -64,7 +94,6 @@ function NewPostPage() {
               <label htmlFor="title">Title</label>
               <input id="title" name="title" type="text" />
             </div>
-
             <div className="item">
               <label htmlFor="price">Price</label>
               <input id="price" name="price" type="number" />
@@ -79,7 +108,13 @@ function NewPostPage() {
             </div>
             <div className="item">
               <label htmlFor="city">City</label>
-              <input id="city" name="city" type="text" />
+              <input
+                id="city"
+                name="city"
+                type="text"
+                value={city}
+                onChange={handleCityChange}
+              />
             </div>
             <div className="item">
               <label htmlFor="bedroom">Bedroom Number</label>
@@ -91,11 +126,23 @@ function NewPostPage() {
             </div>
             <div className="item">
               <label htmlFor="latitude">Latitude</label>
-              <input id="latitude" name="latitude" type="text" />
+              <input
+                id="latitude"
+                name="latitude"
+                type="text"
+                value={latitude}
+                readOnly
+              />
             </div>
             <div className="item">
               <label htmlFor="longitude">Longitude</label>
-              <input id="longitude" name="longitude" type="text" />
+              <input
+                id="longitude"
+                name="longitude"
+                type="text"
+                value={longitude}
+                readOnly
+              />
             </div>
             <div className="item">
               <label htmlFor="type">Type</label>
@@ -107,7 +154,7 @@ function NewPostPage() {
               </select>
             </div>
             <div className="item">
-              <label htmlFor="type">Property</label>
+              <label htmlFor="property">Property</label>
               <select name="property">
                 <option value="apartment">Apartment</option>
                 <option value="house">House</option>
@@ -148,7 +195,7 @@ function NewPostPage() {
               <input min={0} id="school" name="school" type="number" />
             </div>
             <div className="item">
-              <label htmlFor="bus">bus</label>
+              <label htmlFor="bus">Bus</label>
               <input min={0} id="bus" name="bus" type="number" />
             </div>
             <div className="item">
@@ -156,7 +203,7 @@ function NewPostPage() {
               <input min={0} id="restaurant" name="restaurant" type="number" />
             </div>
             <button className="sendButton">Update</button>
-            {error && <span>error</span>}
+            {error && <span>{error}</span>}
           </form>
         </div>
       </div>
@@ -169,7 +216,6 @@ function NewPostPage() {
             multiple: true,
             cloudName: "dquxoba5l",
             uploadPreset: "Estate",
-
             folder: "posts",
           }}
           setState={setImages}
