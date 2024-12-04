@@ -1,7 +1,46 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import apiRequest from "../../lib/apiRequest"; // Assuming you have apiRequest set up
 import "./card.scss";
+import axios from "axios";
 
 function Card({ item }) {
+  // State to manage the message input
+  const [message, setMessage] = useState("");
+
+  // Handle typing in the message input field
+  const handleMessageChange = (e) => {
+    setMessage(e.target.value);
+  };
+
+  // Handle form submission (send message)
+  const handleChatSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!message.trim()) {
+      setError("Message cannot be empty");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8800/api/messages`,
+        {
+          text: message,
+          receiverId: item.userId, // Assuming `item` contains the card user's ID
+        },
+        { withCredentials: true }
+      );
+
+      console.log("Message sent:", response.data);
+      setMessage("");
+      setError("");
+    } catch (err) {
+      console.error("Failed to send message:", err);
+      setError("Failed to send message. Please try again.");
+    }
+  };
+
   return (
     <div className="card">
       <Link to={`/${item.id}`} className="imageContainer">
@@ -31,11 +70,29 @@ function Card({ item }) {
             <div className="icon">
               <img src="/save.png" alt="" />
             </div>
-            <div className="icon">
+            <div
+              className="icon"
+              onClick={() => {
+                /* Handle opening chat UI */
+              }}
+            >
               <img src="/chat.png" alt="" />
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Message Input Form */}
+      <div className="messageInputContainer">
+        <form onSubmit={handleChatSubmit}>
+          <input
+            type="text"
+            placeholder="Type your message"
+            value={message}
+            onChange={handleMessageChange}
+          />
+          <button type="submit">Send</button>
+        </form>
       </div>
     </div>
   );
