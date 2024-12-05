@@ -24,8 +24,10 @@ export const getPosts = async (req, res) => {
     res.status(500).json({ message: "failed to get posts" });
   }
 };
+
 export const getPost = async (req, res) => {
   const id = req.params.id;
+
   try {
     const post = await prisma.post.findUnique({
       where: { id },
@@ -40,32 +42,36 @@ export const getPost = async (req, res) => {
       },
     });
 
-    const token = req.cookies?.token;
-
-    if (token) {
-      jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, payload) => {
-        if (!err) {
-          const saved = await prisma.savedPost.findUnique({
-            where: {
-              userId_postId: {
-                postId: id,
-                userId: payload.id,
-              },
-            },
-          });
-          res.status(200).json({ ...post, isSaved: saved ? true : false });
-        } else {
-          // If there is an error verifying the token
-          res.status(200).json({ ...post, isSaved: false });
-        }
-      });
-    } else {
-      // No token found
-      res.status(200).json({ ...post, isSaved: false });
+    // If post is not found
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
     }
+
+    // Initialize `isSaved` as false
+    let isSaved = false;
+
+    // Check token and saved status
+    const token = req.cookies?.token;
+    if (token) {
+      try {
+        const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const saved = await prisma.savedPost.findFirst({
+          where: {
+            postId: id,
+            userId: payload.id,
+          },
+        });
+        isSaved = saved ? true : false;
+      } catch (err) {
+        console.error("JWT Verification Error:", err);
+      }
+    }
+
+    // Send the response
+    return res.status(200).json({ ...post, isSaved });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "failed to get post" });
+    console.error(err);
+    return res.status(500).json({ message: "Failed to get post" });
   }
 };
 
