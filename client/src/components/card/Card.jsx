@@ -12,6 +12,18 @@ function Card({ item }) {
   const handleMessageChange = (e) => {
     setMessage(e.target.value);
   };
+  const handleSavePost = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8800/api/users/save`,
+        { postId: item.id },
+        { withCredentials: true }
+      );
+      console.log(response.data.message);
+    } catch (err) {
+      console.error("Failed to save post:", err);
+    }
+  };
 
   // Handle form submission (send message)
   const handleChatSubmit = async (e) => {
@@ -67,9 +79,10 @@ function Card({ item }) {
             </div>
           </div>
           <div className="icons">
-            <div className="icon">
-              <img src="/save.png" alt="" />
+            <div className="icon" onClick={handleSavePost}>
+              <img src="/save.png" alt="Save Post" />
             </div>
+
             <div
               className="icon"
               onClick={() => {
