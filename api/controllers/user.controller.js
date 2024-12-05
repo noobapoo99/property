@@ -108,7 +108,7 @@ export const savePost = async (req, res) => {
 };
 
 export const profilePosts = async (req, res) => {
-  console.log("Req User ID in ProfilePosts:", req.userId); // Log the userId for debugging
+  //console.log("Req User ID in ProfilePosts:", req.userId); // Log the userId for debugging
 
   const tokenUserId = req.userId; // Get the userId directly from req.userId
   if (!tokenUserId) {
