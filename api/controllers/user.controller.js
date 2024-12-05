@@ -110,21 +110,36 @@ export const savePost = async (req, res) => {
 };
 
 export const profilePosts = async (req, res) => {
-  const tokenUserId = req.params.userId;
+  console.log("Req User ID in ProfilePosts:", req.userId); // Log the userId for debugging
+
+  const tokenUserId = req.userId; // Get the userId directly from req.userId
+  if (!tokenUserId) {
+    return res.status(400).json({ message: "User ID is missing." });
+  }
+
   try {
+    // Fetch user posts based on the userId
     const userPosts = await prisma.post.findMany({
       where: { userId: tokenUserId },
     });
+
+    // Fetch saved posts and include related post data
     const saved = await prisma.savedPost.findMany({
       where: { userId: tokenUserId },
       include: {
-        post: true,
+        post: true, // Ensure we include the post data
       },
     });
-    const savedPosts = saved.map((item) => item.post);
+
+    // Filter out null posts in saved posts and map to return only the post data
+    const savedPosts = saved
+      .filter((item) => item.post !== null)
+      .map((item) => item.post);
+
+    // Return the user posts and saved posts
     res.status(200).json({ userPosts, savedPosts });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.error("Error fetching profile posts:", error.message);
     res.status(500).json({ message: "Failed to get profile Posts!" });
   }
 };
