@@ -22,8 +22,8 @@ model Post {
   city       String
   bedroom    Int
   bathroom   Int
-  latitude   String
-  longitude  String
+  latitude   Float
+  longitude  Float
   type       Type
   property   Property
   createdAt  DateTime    @default(now())
@@ -61,13 +61,11 @@ model PostDetail {
 
 model SavedPost {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  user      user     @relation(fields: [userId], references: [id])
-  post      Post     @relation(fields: [postId], references: [id])
-  userId    String   @unique @db.ObjectId
-  postId    String   @unique @db.ObjectId
-  createdAt DateTime @default(now())
-
-  @@unique([userId, postId])
+  user      user     @relation(fields: [userId], references: [id]) // Correct relation to user
+  post      Post     @relation(fields: [postId], references: [id]) // Correct relation to post
+  userId    String   @unique @db.ObjectId // User ID is unique for SavedPost
+  postId    String   @unique @db.ObjectId // Post ID is unique for SavedPost
+  createdAt DateTime @default(now()) // Date field for creation time
 }
 
 model user {

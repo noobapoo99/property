@@ -22,9 +22,8 @@ function Navbar() {
           <span>Estate</span>
         </a>
         <a href="/">Home</a>
-        <a href="/">About</a>
-        <a href="/">Contact</a>
-        <a href="/">Agents</a>
+        <a href="https://github.com/noobapoo99/property">About</a>
+        <a href="https://github.com/noobapoo99">Contact</a>
       </div>
       <div className="right">
         {currentUser ? (

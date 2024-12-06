@@ -35,19 +35,27 @@ function Chat({ chats }) {
     e.preventDefault();
 
     const formData = new FormData(e.target);
-    const text = formData.get("text");
+    const text = formData.get("text").trim(); // Trim unnecessary spaces
 
     if (!text) return;
+
     try {
-      const res = await apiRequest.post("/messages/" + chat.id, { text });
-      setChat((prev) => ({ ...prev, messages: [...prev.messages, res.data] }));
+      console.log({ text, receiverId: chat.receiver.id }); // Debugging
+      const res = await apiRequest.post("/messages/", {
+        text,
+        receiverId: chat.receiver.id, // Include receiverId
+      });
+      setChat((prev) => ({
+        ...prev,
+        messages: [...prev.messages, res.data.message],
+      }));
       e.target.reset();
       socket.emit("sendMessage", {
         receiverId: chat.receiver.id,
-        data: res.data,
+        data: res.data.message,
       });
     } catch (err) {
-      console.log(err);
+      console.error("Error in handleSubmit:", err);
     }
   };
 
