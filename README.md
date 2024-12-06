@@ -2,6 +2,10 @@
 
 A modern and dynamic Real Estate Website developed to provide an enhanced browsing experience for users. The platform leverages advanced web technologies to create an intuitive and interactive interface, enabling users to explore real estate listings seamlessly.
 
+# Checkout the website using this url
+
+``https://estate-frontend.netlify.app/``
+
 ## Features
 
 - **Enhanced Browsing Experience**
