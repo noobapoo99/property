@@ -2,11 +2,9 @@
 
 A modern and dynamic Real Estate Website developed to provide an enhanced browsing experience for users. The platform leverages advanced web technologies to create an intuitive and interactive interface, enabling users to explore real estate listings seamlessly.
 
-# Checkout the website using this url
-
-``https://estate-frontend.netlify.app/``
-
 ## Features
+
+- **Live Demo**: [Explore the Website Here](https://estate-frontend.netlify.app/)
 
 - **Enhanced Browsing Experience**
   - Developed using React and Tailwind CSS for a responsive and visually appealing UI.
@@ -93,3 +91,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 Developed by Apoorv Nath Tripathi.
+
